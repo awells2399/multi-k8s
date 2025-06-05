@@ -42,5 +42,5 @@ jobs:
           environment_name: Multi-docker-env-1
           existing_bucket_name: elasticbeanstalk-us-east-1-864981742255
           region: us-east-1
-          version_label: ${{ github.sha }}
+          version_label: ${{ github.sha }} + "-v1"
           deployment_package: deploy.zip
