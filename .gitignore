@@ -69,3 +69,9 @@ Desktop.ini
 # Local files
 *.log
 *.sqlite3
+
+#lock
+*/package-lock.json
+
+# Jenkins
+Jenkinsfile
