@@ -39,17 +39,16 @@ jobs:
           docker build -t multi-server:latest ./server
           docker build -t multi-worker:latest ./worker
 
-      - name: Tag Docker image
+      - name: Tag and push Docker image
         env:
           ECR_REPO: ${{ env.ECR_ACCOUNT }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_NAMESPACE }}/${{ env.ECR_REPO_NAME }}
 
         run: |
           docker tag multi-client:latest ${{ env.ECR_REPO_NAME }}:client
-          docker tag multi-server:latest ${{ env.ECR_REPO_NAME }}:server
-          docker tag multi-worker:latest ${{ env.ECR_REPO_NAME }}:worker
-
-      - name: Push Docker image to ECR
-        run: |
           docker push ${{ env.ECR_REPO_NAME }}:client
+
+          docker tag multi-server:latest ${{ env.ECR_REPO_NAME }}:server
           docker push ${{ env.ECR_REPO_NAME }}:server
+
+          docker tag multi-worker:latest ${{ env.ECR_REPO_NAME }}:worker
           docker push ${{ env.ECR_REPO_NAME }}:worker
