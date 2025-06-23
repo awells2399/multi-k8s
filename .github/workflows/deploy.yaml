@@ -10,6 +10,7 @@ env:
   aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
   AWS_REGION: "us-east-1"
   ECR_URI: ${{secrets.ECR_URI}}
+  CLUSTER_NAME: ${{ secrets.CLUSTER_NAME}}
 
 jobs:
   build-and-push:
@@ -47,3 +48,17 @@ jobs:
 
           docker tag multi-worker:latest ${{ env.ECR_URI }}:worker
           docker push ${{ env.ECR_URI }}:worker
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: "latest"
+
+      - name: Write kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          aws eks update-kubeconfig --name multi_fib
+
+      - name: Deploy to EKS
+        run: |
+          kubectl apply -f k8s/
